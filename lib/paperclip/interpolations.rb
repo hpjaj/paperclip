@@ -183,6 +183,18 @@ module Paperclip
       end
     end
 
+    # Custom method - returns the kid_id of the instance
+    def kid_id_partition attachment, style_name
+      case id = attachment.instance.kid_id
+      when Integer
+        ("%09d".freeze % id).scan(/\d{3}/).join("/".freeze)
+      when String
+        id.scan(/.{3}/).first(3).join("/".freeze)
+      else
+        nil
+      end
+    end
+
     # Returns the pluralized form of the attachment name. e.g.
     # "avatars" for an attachment of :avatar
     def attachment attachment, style_name
